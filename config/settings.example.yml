@@ -1,0 +1,12 @@
+defaults: &defaults
+  :log_level: warn
+
+:development:
+  <<: *defaults
+  :log_level: debug
+
+:test:
+  <<: *defaults
+
+:production:
+  <<: *defaults
