@@ -23,7 +23,6 @@ class Site < Ohm::Model
   
   include ActiveSupport::Callbacks
   define_callbacks :before_save, :after_save
-  alias_method_chain :save, :callbacks
   
   def save_with_callbacks #:nodoc:
     return false if callback(:before_save) == false
@@ -33,6 +32,7 @@ class Site < Ohm::Model
     result
   end
   private :save_with_callbacks
+  alias_method_chain :save, :callbacks
   
   attribute :name
   attribute :url
@@ -43,15 +43,21 @@ class Site < Ohm::Model
   
   index :url
   
-  assert_present :name
-  assert_present :url
-  assert_present :threshold
-  assert_present :email
-  
-  assert_format :email, Regex.email
-  assert_format :url, Regex.http_url
-  
   after_save :create_monit_check
+  
+  def validate
+    assert_present :name
+    assert_present :url
+    assert_present :threshold
+    assert_present :email
+  
+    assert_format :email, Regex.email
+    assert_format :url, Regex.http_url
+  end
+  
+  def host
+    URI.parse(url).host
+  end
   
   private
     def create_monit_check

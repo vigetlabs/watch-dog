@@ -1,7 +1,8 @@
 .rsync_cache
 .DS_Store
 coverage/*
-log/*.log
+log/*
+*.log
 tmp/*
 tmp/**/*
 config/settings.yml

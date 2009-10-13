@@ -1,0 +1,8 @@
+check host {{host}} with address {{host}}
+    if failed url {{url}}
+    and content != "{{match_text}}"
+    for {{threshold}} cycles
+        then alert {{email}} with mail-format {
+            subject: [WATCH DOG] {{site_name}} is not responding!
+            message: As of $DATE {{site_name}} appears to not be responding.
+        }

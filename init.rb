@@ -22,6 +22,7 @@ class Main < Monk::Glue
   
   configure do
     Ohm.connect
+    
     # Load all application files.
     Dir[root_path("app/**/*.rb")].each do |file|
       require file

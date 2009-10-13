@@ -9,7 +9,7 @@ class Main
       
       def input(type, name, value = nil, options = {})
         label = options[:label] || name.titlecase
-        html_id = options[:name] || name
+        html_id = options[:id] || name
         <<-HTML
   <p>
     <label for="#{html_id}">#{label}</label>
@@ -20,7 +20,7 @@ HTML
       
       def text_area(name, value = nil, options = {})
         label = options[:label] || name.titlecase
-        html_id = options[:name] || name
+        html_id = options[:id] || name
         <<-HTML
   <p>
     <label for="#{html_id}">#{label}</label>
