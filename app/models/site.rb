@@ -21,6 +21,19 @@ class Site < Ohm::Model
     end
   end
   
+  include ActiveSupport::Callbacks
+  define_callbacks :before_save, :after_save
+  alias_method_chain :save, :callbacks
+  
+  def save_with_callbacks #:nodoc:
+    return false if callback(:before_save) == false
+    if result = save_without_callbacks
+      callback(:after_save)
+    end
+    result
+  end
+  private :save_with_callbacks
+  
   attribute :name
   attribute :url
   attribute :match_text
@@ -37,4 +50,12 @@ class Site < Ohm::Model
   
   assert_format :email, Regex.email
   assert_format :url, Regex.http_url
+  
+  after_save :create_monit_check
+  
+  private
+    def create_monit_check
+      
+    end
+  
 end
