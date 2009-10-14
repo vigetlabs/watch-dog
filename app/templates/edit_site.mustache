@@ -1,7 +1,8 @@
 <h2>Edit this Site</h2>
 
 <div id="site-form-wrapper">
-  <form action="/sites/{{site_id}}">
+  <form action="/sites/{{site_id}}" method="post">
+    <input type="hidden" name="_method" value="put" />
     <fieldset>
       {{{name_input}}}
       {{{url_input}}}

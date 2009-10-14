@@ -65,4 +65,8 @@ class Site < Ohm::Model
 
     end
 
+    def callback(opts = {})
+
+    end
+
 end

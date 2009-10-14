@@ -21,4 +21,10 @@ class Main
     @site = Site[params[:id]]
     mustache :edit_site
   end
+
+  put "/sites/:id" do
+    @site = Site[params[:id]]
+    @site.update(params[:site])
+    redirect "/sites/#{@site.id}"
+  end
 end

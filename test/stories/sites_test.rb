@@ -30,5 +30,14 @@ class SitesTest < Test::Unit::TestCase
       assert_have_selector 'form textarea[name="site[match_text]"]'
       assert_contain "feeling lucky"
     end
+
+    scenario "A user updates a site record" do
+      site = Site.factory.save
+      visit "/sites/#{site.id}/edit"
+      fill_in "email", :with => "newuser@example.com"
+      click_button "save"
+      assert_equal "newuser@example.com", Site[site.id].email
+      assert_contain "feeling lucky"
+    end
   end
 end
