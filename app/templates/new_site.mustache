@@ -1,13 +1,14 @@
 <h2>Setup a New Site to Watch</h2>
 <div id="site-form-wrapper">
-  <form action="/sites">
+  <form action="/sites" method="post">
     <fieldset>
       {{{name_input}}}
-      {{{url_input}}}
       {{{url_input}}}
       {{{text_match_input}}}
       {{{threshold_input}}}
       {{{email_input}}}
     </fieldset>
+
+    <input type="submit" value="add" />
   </form>
 </div>

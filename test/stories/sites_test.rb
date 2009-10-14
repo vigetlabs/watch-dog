@@ -13,6 +13,31 @@ class SitesTest < Test::Unit::TestCase
       assert_have_selector 'form input[name="site[threshold]"]'
       assert_have_selector 'form input[name="site[email]"]'
     end
+
+    scenario "A user submits valid site information" do
+      visit "/sites/new"
+      fill_in "site-name", :with => "Google"
+      fill_in "site-url", :with => "http://google.com"
+      fill_in "site-match_text", :with => "xxxxx"
+      fill_in "site-threshold", :with => "5"
+      fill_in "site-email", :with => "admin@google.com"
+      click_button "add"
+
+      assert_have_no_selector "form"
+      assert_contain "admin@google.com"
+    end
+
+    scenario "A user submits invalid site information" do
+      visit "/sites/new"
+      fill_in "site-name", :with => "Google"
+      fill_in "site-url", :with => ""
+      fill_in "site-match_text", :with => "xxxxx"
+      fill_in "site-threshold", :with => "5"
+      fill_in "site-email", :with => "admin@google.com"
+      click_button "add"
+
+      assert_have_selector 'form input[value="admin@google.com"]'
+    end
   end
 
   story "I should be able to view details about a site" do

@@ -1,14 +1,15 @@
 class Main
   get "/sites/new" do
+    @site = Site.new
     mustache :new_site
   end
 
   post '/sites' do
     @site = Site.new(params['site'])
     if @site.save
-
+      redirect "/sites/#{@site.id}"
     else
-
+      mustache :new_site
     end
   end
 
@@ -24,7 +25,6 @@ class Main
 
   put "/sites/:id" do
     @site = Site[params[:id]]
-
     if @site.update(params[:site])
       redirect "/sites/#{@site.id}"
     else
