@@ -36,7 +36,7 @@ class SitesTest < Test::Unit::TestCase
       visit "/sites/#{site.id}/edit"
       fill_in "email", :with => "newuser@example.com"
       click_button "save"
-      assert_equal "newuser@example.com", Site[site.id].email
+      assert_contain "newuser@example.com"
       assert_contain "feeling lucky"
     end
   end
