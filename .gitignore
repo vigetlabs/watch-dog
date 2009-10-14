@@ -3,6 +3,7 @@
 coverage/*
 log/*
 *.log
+dump.rdb
 tmp/*
 tmp/**/*
 config/settings.yml
