@@ -18,9 +18,16 @@ class SitesTest < Test::Unit::TestCase
   story "I should be able to view details about a site" do
     scenario "A user goes to the site page" do
       site = Site.factory.save
-
       visit "/sites/#{site.id}"
+      assert_contain "feeling lucky"
+    end
+  end
 
+  story "I should be able to edit details about a site" do
+    scenario "A user goes to the site edit page" do
+      site = Site.factory.save
+      visit "/sites/#{site.id}/edit"
+      assert_have_selector 'form textarea[name="site[match_text]"]'
       assert_contain "feeling lucky"
     end
   end

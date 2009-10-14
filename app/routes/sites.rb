@@ -14,7 +14,11 @@ class Main
 
   get "/sites/:id" do
     @site = Site[params[:id]]
-
     mustache :show_site
+  end
+
+  get "/sites/:id/edit" do
+    @site = Site[params[:id]]
+    mustache :edit_site
   end
 end
