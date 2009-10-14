@@ -36,8 +36,20 @@ class SitesTest < Test::Unit::TestCase
       visit "/sites/#{site.id}/edit"
       fill_in "email", :with => "newuser@example.com"
       click_button "save"
+
+      assert_have_no_selector "form"
       assert_contain "newuser@example.com"
       assert_contain "feeling lucky"
+    end
+
+    scenario "A user updates a site record with invalid data" do
+      site = Site.factory.save
+      visit "/sites/#{site.id}/edit"
+      fill_in "email", :with => "xxxxx"
+      click_button "save"
+
+      assert_not_contain "xxxxx"
+      assert_have_selector "form"
     end
   end
 end
