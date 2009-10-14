@@ -1,27 +1,27 @@
 class Main
   module Helpers
     module SitesHelper
-      
-      def name_input(value = nil)
-        input(:text, 'site[name]', value, :id => 'site-name', :label => 'Site Name')
+      attr_reader :site
+
+      def name_input
+        input(:text, 'site[name]', site.name, :id => 'site-name', :label => 'Site Name')
       end
-      
+
       def url_input(value = nil)
-        input(:text, 'site[url]', value, :id => 'site-url', :label => 'Site URL')
+        input(:text, 'site[url]', site.url, :id => 'site-url', :label => 'Site URL')
       end
-      
-      def text_match_input(value = nil)
-        text_area('site[match_text]', value, :id => 'site-match_text', :label => 'Text to Match')
+
+      def match_text_input(value = nil)
+        text_area('site[match_text]', site.match_text, :id => 'site-match_text', :label => 'Text to Match')
       end
-      
+
       def threshold_input(value = nil)
-        input(:text, 'site[threshold]', value, :id => 'site-threshold', :label => '# of Failures')
+        input(:text, 'site[threshold]', site.threshold, :id => 'site-threshold', :label => '# of Failures')
       end
-      
+
       def email_input(value = nil)
-        input(:text, 'site[email]', value, :id => 'site-email', :label => 'Email Address')
+        input(:text, 'site[email]', site.email, :id => 'site-email', :label => 'Email Address')
       end
-      
     end
   end
 end
