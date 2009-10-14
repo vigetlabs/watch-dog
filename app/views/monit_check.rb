@@ -4,6 +4,10 @@ class MonitCheck < Mustache
   
   attr_reader :site
   
+  def watch_dog_host
+    settings :host_name
+  end
+  
   def site_name
     site.name
   end

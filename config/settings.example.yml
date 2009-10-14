@@ -1,5 +1,6 @@
 defaults: &defaults
   :log_level: warn
+  :host_name: watch-dog.local
 
 :development:
   <<: *defaults

@@ -115,7 +115,6 @@ module Ohm
       @mutex = Mutex.new if @thread_safe
 
       @logger.info { self.to_s } if @logger
-      connect_to_server
     end
 
     def to_s
@@ -179,7 +178,7 @@ module Ohm
 
       begin
         raw_call_command(argv.dup)
-      rescue Errno::ECONNRESET, Errno::EPIPE
+      rescue Errno::ECONNRESET, Errno::EPIPE, Errno::ECONNABORTED
         @sock.close
         @sock = nil
         connect_to_server
