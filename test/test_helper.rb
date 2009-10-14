@@ -6,6 +6,7 @@ require "rack/test"
 require "contest"
 require "quietbacktrace"
 require 'active_support/test_case'
+require "factories"
 
 class Test::Unit::TestCase
   include Rack::Test::Methods
