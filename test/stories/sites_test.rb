@@ -99,6 +99,6 @@ class SitesTest < Test::Unit::TestCase
   end
   
   teardown do
-    FileUtils.rm_f(Dir["monitrc/*.monitrc"])
+    FileUtils.rm_f(Dir["monitrc/#{RACK_ENV}/*.monitrc"])
   end
 end

@@ -59,10 +59,10 @@ class Site < Ohm::Model
   private
     def create_monit_check
       @template = MonitCheck.new(self)
-      File.open(root_path('monitrc', "#{self.id}.monitrc"), 'w') do |file|
+      File.open(root_path('monitrc', RACK_ENV, "#{self.id}.monitrc"), 'w') do |file|
         file << @template.render
       end
-      FileUtils.chmod 0700, root_path('monitrc', "#{self.id}.monitrc")
+      FileUtils.chmod 0700, root_path('monitrc', RACK_ENV, "#{self.id}.monitrc")
       system "#{File.join(settings(:monit_bin_dir), 'monit')} #{settings(:monit_cli_options)} reload"
     end
 

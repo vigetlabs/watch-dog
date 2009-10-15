@@ -62,16 +62,16 @@ class SiteTest < Test::Unit::TestCase
     should 'create monitrc file' do
       @site.save
       
-      assert File.file?(root_path('monitrc', "#{@site.id}.monitrc"))
-      assert File.size?(root_path('monitrc', "#{@site.id}.monitrc"))
+      assert File.file?(root_path('monitrc', RACK_ENV, "#{@site.id}.monitrc"))
+      assert File.size?(root_path('monitrc', RACK_ENV, "#{@site.id}.monitrc"))
       
-      permissions = sprintf('%o', File.stat(root_path('monitrc', "#{@site.id}.monitrc")).mode)
+      permissions = sprintf('%o', File.stat(root_path('monitrc', RACK_ENV, "#{@site.id}.monitrc")).mode)
       assert_equal permissions[-3..-1], "700"
     end
     
     teardown do
       unless @site.new?
-        FileUtils.rm_f(root_path('monitrc', "#{@site.id}.monitrc"))
+        FileUtils.rm_f(root_path('monitrc', RACK_ENV, "#{@site.id}.monitrc"))
       end
       @site = nil
     end
