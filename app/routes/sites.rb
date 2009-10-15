@@ -1,4 +1,8 @@
 class Main
+  get %r{^/(sites)?$} do
+    mustache :index
+  end
+
   get "/sites/new" do
     @site = Site.new
     mustache :new_site
@@ -31,7 +35,7 @@ class Main
       mustache :edit_site
     end
   end
-  
+
   post "/sites/:id/status" do
     @site = Site[params[:id]]
     @site.status_record << params[:status]
