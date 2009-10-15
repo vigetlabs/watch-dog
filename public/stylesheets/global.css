@@ -44,3 +44,8 @@ ul.sites li.success {
 ul.sites li.fail {
   background-color: #fcc;
 }
+
+ul.errors {
+  color: #c00;
+}
+

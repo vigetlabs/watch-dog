@@ -1,5 +1,11 @@
 <h2>New Site</h2>
 
+<ul class="errors">
+{{#site_errors}}
+  <li>{{message}}</li>
+{{/site_errors}}
+</ul>
+
 <div id="site-form-wrapper">
   <form action="/sites" method="post">
     <fieldset>

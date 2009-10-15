@@ -1,3 +1,9 @@
+<ul class="errors">
+{{#site_errors}}
+  <li>{{message}}</li>
+{{/site_errors}}
+</ul>
+
 <div id="site-form-wrapper">
   <form action="/sites/{{site_id}}" method="post">
     <input type="hidden" name="_method" value="put" />
