@@ -69,6 +69,18 @@ class SiteTest < Test::Unit::TestCase
       assert_equal permissions[-3..-1], "700"
     end
     
+    context "with a few status' recorded" do
+      setup do
+        @site.save
+        @site.status_record << "fail"
+        @site.status_record << "success"
+        @site.status_record << "fail"
+        @site.status_record << "success"
+        
+        assert_equal @site.latest_status, "success"
+      end
+    end
+    
     teardown do
       unless @site.new?
         FileUtils.rm_f(root_path('monitrc', RACK_ENV, "#{@site.id}.monitrc"))
