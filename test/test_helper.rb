@@ -6,6 +6,7 @@ require "rack/test"
 require "contest"
 require "quietbacktrace"
 require 'active_support/testing/assertions'
+require 'mocha'
 
 Ohm.flush
 

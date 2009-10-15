@@ -69,6 +69,15 @@ class SiteTest < Test::Unit::TestCase
       assert_equal permissions[-3..-1], "700"
     end
     
+    should 'reload monit' do
+      @site.class_eval do
+        def system(*args); end
+      end
+      @site.expects(:system).with("#{File.join(settings(:monit_bin_dir), 'monit')} #{settings(:monit_cli_options)} reload").returns(true)
+      
+      @site.save
+    end
+    
     context "with a few status' recorded" do
       setup do
         @site.save
