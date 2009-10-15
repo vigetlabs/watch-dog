@@ -20,25 +20,25 @@ class Test::Unit::TestCase
   def app
     Main.new
   end
-  
+
   def assert_contains(collection, x, extra_msg = "")
     collection = [collection] unless collection.is_a?(Array)
     msg = "#{x.inspect} not found in #{collection.to_a.inspect} #{extra_msg}"
     case x
     when Regexp
       assert(collection.detect { |e| e =~ x }, msg)
-    else         
+    else
       assert(collection.include?(x), msg)
     end
   end
-  
+
   def assert_does_not_contain(collection, x, extra_msg = "")
     collection = [collection] unless collection.is_a?(Array)
     msg = "#{x.inspect} found in #{collection.to_a.inspect} " + extra_msg
     case x
     when Regexp
       assert(!collection.detect { |e| e =~ x }, msg)
-    else         
+    else
       assert(!collection.include?(x), msg)
     end
   end
@@ -55,11 +55,11 @@ module Factory
 
   def factory(options = {}, &block)
     if block_given?
-      @default_options = block
+      @default_options = Options.new.instance_eval(&block)
     else
-      @default_options.nil? ?
-        self.new(options) :
-        self.new(@default_options.call.merge(options))
+      options = (@default_options || {}).merge(options)
+      options.each {|k,v| options[k] = v.call if v.is_a?(Proc) }
+      self.new(options)
     end
   end
 end
