@@ -28,8 +28,9 @@ class Site < Ohm::Model
     end
     result
   end
-  private :save_with_monit_callback
-  alias_method_chain :save, :monit_callback
+
+  alias :save_without_monit_callback :save
+  alias :save :save_with_monit_callback
 
   attribute :name
   attribute :url
