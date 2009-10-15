@@ -1,6 +1,6 @@
 Site.factory do
   name "Google"
-  url "http://google.com"
+  url "http://www.google.com/intl/en/help/features.html?rand=#{rand(9999)}"
   match_text "feeling lucky"
   threshold 5
   email "admin@google.com"

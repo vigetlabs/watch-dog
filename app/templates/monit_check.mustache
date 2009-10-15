@@ -1,8 +1,10 @@
-check host {{host}} with address {{host}}
+check host {{host_name}}_{{site_id}} with address {{host_name}}
     if failed url {{url}}
     and content != "{{match_text}}"
     for {{threshold}} cycles
-        then exec "curl http://{{watch_dog_host}}/sites/{site_id}/"
+        then exec "{{curl_bin_dir}}/curl -fs -d status=fail http://{{watch_dog_host}}/sites/{{site_id}}/status"
+    else if succeeded
+        then exec "{{curl_bin_dir}}/curl -fs -d status=success http://{{watch_dog_host}}/sites/{{site_id}}/status"
     alert {{email}} with mail-format {
       subject: [WATCH DOG] $EVENT for {{site_name}}
       message: As of $DATE {{site_name}} is $EVENT:

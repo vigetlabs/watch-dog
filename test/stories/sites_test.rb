@@ -17,7 +17,7 @@ class SitesTest < Test::Unit::TestCase
     scenario "A user submits valid site information" do
       visit "/sites/new"
       fill_in "site-name", :with => "Google"
-      fill_in "site-url", :with => "http://google.com"
+      fill_in "site-url", :with => "http://google.com/search?q=#{rand(9999)}"
       fill_in "site-match_text", :with => "xxxxx"
       fill_in "site-threshold", :with => "5"
       fill_in "site-email", :with => "admin@google.com"

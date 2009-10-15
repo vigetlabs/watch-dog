@@ -1,4 +1,5 @@
 require 'uri'
+require 'fileutils'
 
 class Site < Ohm::Model
   module Regex
@@ -20,20 +21,15 @@ class Site < Ohm::Model
       @http_url = Regexp.new("^(?:http|https):(?:#{NET_PATH})(?:\\?(?:#{QUERY}))?$", Regexp::EXTENDED, 'N')
     end
   end
-
-  include ActiveSupport::Callbacks
-  define_callbacks :before_save, :after_save
-
-  def save_with_callbacks #:nodoc:
-    return false if callback(:before_save) == false
-    if result = save_without_callbacks
-      callback(:after_save)
+  
+  def save_with_monit_callback
+    if result = save_without_monit_callback
+      create_monit_check
     end
     result
   end
-  private :save_with_callbacks
-
-  # alias_method_chain :save, :callbacks
+  private :save_with_monit_callback
+  alias_method_chain :save, :monit_callback
 
   attribute :name
   attribute :url
@@ -44,13 +40,13 @@ class Site < Ohm::Model
 
   index :url
 
-  after_save :create_monit_check
-
   def validate
     assert_present :name
     assert_present :url
     assert_present :threshold
     assert_present :email
+    
+    assert_unique :url
 
     assert_format :email, Regex.email
     assert_format :url, Regex.http_url
@@ -62,11 +58,12 @@ class Site < Ohm::Model
 
   private
     def create_monit_check
-
-    end
-
-    def callback(opts = {})
-
+      @template = MonitCheck.new(self)
+      File.open(root_path('monitrc', "#{self.id}.monitrc"), 'w') do |file|
+        file << @template.render
+      end
+      FileUtils.chmod 0700, root_path('monitrc', "#{self.id}.monitrc")
+      system "#{File.join(settings(:monit_bin_dir), 'monit')} #{settings(:monit_cli_options)} reload"
     end
 
 end

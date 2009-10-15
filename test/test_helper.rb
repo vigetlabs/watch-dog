@@ -5,15 +5,40 @@ require File.expand_path(File.join(File.dirname(__FILE__), "..", "init"))
 require "rack/test"
 require "contest"
 require "quietbacktrace"
-require 'active_support/test_case'
+require 'active_support/testing/assertions'
+
+Debugger.start
+Debugger.settings[:autoeval] = true
+Debugger.settings[:autolist] = 1
 
 class Test::Unit::TestCase
   include Rack::Test::Methods
-  include ActiveSupport::Testing::SetupAndTeardown
   include ActiveSupport::Testing::Assertions
 
   def app
     Main.new
+  end
+  
+  def assert_contains(collection, x, extra_msg = "")
+    collection = [collection] unless collection.is_a?(Array)
+    msg = "#{x.inspect} not found in #{collection.to_a.inspect} #{extra_msg}"
+    case x
+    when Regexp
+      assert(collection.detect { |e| e =~ x }, msg)
+    else         
+      assert(collection.include?(x), msg)
+    end
+  end
+  
+  def assert_does_not_contain(collection, x, extra_msg = "")
+    collection = [collection] unless collection.is_a?(Array)
+    msg = "#{x.inspect} found in #{collection.to_a.inspect} " + extra_msg
+    case x
+    when Regexp
+      assert(!collection.detect { |e| e =~ x }, msg)
+    else         
+      assert(!collection.include?(x), msg)
+    end
   end
 end
 

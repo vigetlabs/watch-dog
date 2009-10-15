@@ -1,22 +1,44 @@
 class MonitCheck < Mustache
-  path = root_path('app', 'templates')
-  template_extension = "mustache"
+  self.path = root_path('app', 'templates')
+  self.template_extension = "mustache"
   
-  attr_reader :site
+  def initialize(site)
+    @site = site
+  end
   
   def watch_dog_host
     settings :host_name
   end
   
-  def site_name
-    site.name
+  def curl_bin_dir
+    settings :curl_bin_dir
   end
   
-  def method_missing(name, *args, &block)
-    if site.respond_to?(name)
-      site.send(name)
-    else
-      super
-    end
+  def site_name
+    @site.name
+  end
+  
+  def host_name
+    @site.host
+  end
+  
+  def url
+    @site.url
+  end
+  
+  def threshold
+    @site.threshold
+  end
+  
+  def match_text
+    @site.match_text
+  end
+  
+  def site_id
+    @site.id
+  end
+  
+  def email
+    @site.email
   end
 end
