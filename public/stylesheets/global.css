@@ -1,0 +1,46 @@
+body {
+  font-family: "Lucida Grande", "Lucida Sans Unicode", sans-serif;
+}
+
+a {
+  color: black;
+}
+
+fieldset {
+  border: none;
+  padding: 0;
+}
+
+label {
+  float: left;
+  width: 150px;
+}
+
+dt {
+  float: left;
+  width: 150px;
+  text-transform: capitalize;
+}
+
+dd {
+  margin-bottom: 20px;
+}
+
+ul.sites {
+  padding: 0;
+}
+
+ul.sites li {
+  list-style-type: none;
+  margin: 2px 0;
+  padding: 5px;
+  background-color: #eee;
+}
+
+ul.sites li.success {
+  background-color: #cfc;
+}
+
+ul.sites li.fail {
+  background-color: #fcc;
+}

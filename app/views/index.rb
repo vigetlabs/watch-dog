@@ -8,7 +8,7 @@ class Main
           {
             :id => site.id,
             :name => site.name,
-            :status => site.latest_status || "-"
+            :status => site.latest_status
           }
         end
       end
