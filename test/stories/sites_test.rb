@@ -97,4 +97,8 @@ class SitesTest < Test::Unit::TestCase
       assert_equal site.status_record.sort(:order => "DESC", :limit => 1).first, "fail"
     end
   end
+  
+  teardown do
+    FileUtils.rm_f(Dir["monitrc/*.monitrc"])
+  end
 end
