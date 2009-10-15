@@ -7,7 +7,7 @@ class SitesTest < Test::Unit::TestCase
 
       visit "/"
 
-      assert_contain "Watch Dog"
+      assert_contain "Watchdog"
       assert_contain site.name
       assert_contain "Add Site to Watch"
     end
@@ -17,7 +17,7 @@ class SitesTest < Test::Unit::TestCase
 
       visit "/sites"
 
-      assert_contain "Watch Dog"
+      assert_contain "Watchdog"
       assert_contain site.name
       assert_contain "Add Site to Watch"
     end
@@ -27,7 +27,7 @@ class SitesTest < Test::Unit::TestCase
     scenario "A user goes to the new site page" do
       visit "/sites/new"
 
-      assert_contain "Setup a New Site to Watch"
+      assert_contain "New Site"
 
       assert_have_selector 'form input[name="site[name]"]'
       assert_have_selector 'form input[name="site[url]"]'
