@@ -9,16 +9,16 @@ class Site < Ohm::Model
     # by reading this website: http://www.regular-expressions.info/email.html, which is an excellent resource
     # for regular expressions.
     def self.email
-      return @email_regex if @email_regex
-      email_name_regex  = '[A-Z0-9_\.%\+\-]+'
-      domain_head_regex = '(?:[A-Z0-9\-]+\.)+'
-      domain_tld_regex  = '(?:[A-Z]{2,4}|museum|travel)'
-      @email_regex = /\A#{email_name_regex}@#{domain_head_regex}#{domain_tld_regex}\z/i
+      @email_regex ||= begin
+        email_name_regex  = '[A-Z0-9_\.%\+\-]+'
+        domain_head_regex = '(?:[A-Z0-9\-]+\.)+'
+        domain_tld_regex  = '(?:[A-Z]{2,4}|museum|travel)'
+        /\A#{email_name_regex}@#{domain_head_regex}#{domain_tld_regex}\z/i
+      end
     end
 
     def self.http_url
-      return @http_url if @http_url
-      @http_url = Regexp.new("^(?:http|https):(?:#{NET_PATH})(?:\\?(?:#{QUERY}))?$", Regexp::EXTENDED, 'N')
+      @http_url ||= Regexp.new("^(?:http|https):(?:#{NET_PATH})(?:\\?(?:#{QUERY}))?$", Regexp::EXTENDED, 'N')
     end
   end
 
