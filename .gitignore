@@ -4,6 +4,7 @@ coverage/*
 log/*
 *.log
 dump.rdb
+monitrc/**/*.monitrc
 tmp/*
 tmp/**/*
 config/settings.yml
