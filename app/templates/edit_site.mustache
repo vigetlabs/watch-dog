@@ -1,11 +1,8 @@
-<h2>Edit this Site</h2>
-
 <div id="site-form-wrapper">
   <form action="/sites/{{site_id}}" method="post">
     <input type="hidden" name="_method" value="put" />
     <fieldset>
       {{{name_input}}}
-      {{{url_input}}}
       {{{url_input}}}
       {{{match_text_input}}}
       {{{threshold_input}}}
@@ -13,5 +10,6 @@
     </fieldset>
 
     <input type="submit" value="save" />
+    | <a href="/sites/{{site_id}}">cancel</a>
   </form>
 </div>

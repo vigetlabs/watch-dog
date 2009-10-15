@@ -1,6 +1,28 @@
 require "stories_helper"
 
 class SitesTest < Test::Unit::TestCase
+  story "I should be able to visit the home page which is a list of sites" do
+    scenario "A visitor goes to the root URL" do
+      site = Site.factory.save
+
+      visit "/"
+
+      assert_contain "Watch Dog"
+      assert_contain site.name
+      assert_contain "Add Site to Watch"
+    end
+
+    scenario "A visitor goes to the sites list" do
+      site = Site.factory.save
+
+      visit "/sites"
+
+      assert_contain "Watch Dog"
+      assert_contain site.name
+      assert_contain "Add Site to Watch"
+    end
+  end
+
   story "I should be able to create a new Site to watch" do
     scenario "A user goes to the new site page" do
       visit "/sites/new"
