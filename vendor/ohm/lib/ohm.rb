@@ -483,6 +483,7 @@ module Ohm
     def new?
       !id
     end
+    alias_method :new_record?, :new?
 
     def create
       return unless valid?

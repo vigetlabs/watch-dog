@@ -47,15 +47,30 @@ class Mustache
     # If enumerable, the return value is iterated over (a `for` loop).
     def compile_sections(src)
       res = ""
-      while src =~ /\{\{\#(.+)\}\}\s*(.+)\{\{\/\1\}\}\s*/m
+      while src =~ /#{otag}\#(.+)#{ctag}\s*(.+)#{otag}\/\1#{ctag}\s*/m
         # $` = The string to the left of the last successful match
         res << compile_tags($`)
         name = $1.strip.to_sym.inspect
         code = compile($2)
         ctxtmp = "ctx#{tmpid}"
-        res << ev("(v = ctx[#{name}]) ? v.respond_to?(:each) ? "\
-          "(#{ctxtmp}=ctx.dup; r=v.map{|h|ctx.update(h);#{code}}.join; "\
-          "ctx.replace(#{ctxtmp});r) : #{code} : ''")
+        res << ev(<<-compiled)
+        if v = ctx[#{name}]
+          v = [v] if v.is_a?(Hash) # shortcut when passed a single hash
+          if v.respond_to?(:each)
+            #{ctxtmp} = ctx.dup
+            begin
+              r = v.map { |h| ctx.update(h); #{code} }.join
+            rescue TypeError => e
+              raise TypeError,
+                "All elements in {{#{name.to_s[1..-1]}}} are not hashes!"
+            end
+            ctx.replace(#{ctxtmp})
+            r
+          else
+            #{code}
+          end
+        end
+        compiled
         # $' = The string to the right of the last successful match
         src = $'
       end
@@ -70,11 +85,13 @@ class Mustache
     # 4. Partial tags - {{< partial_name }}
     def compile_tags(src)
       res = ""
-      while src =~ /\{\{(!|<|\{)?([^\/#]+?)\1?\}\}+/
+      while src =~ /#{otag}(=|!|<|\{)?([^\/#]+?)\1?#{ctag}+/
         res << str($`)
         case $1
         when '!'
           # ignore comments
+        when '='
+          self.otag, self.ctag = $2.strip.split(' ', 2)
         when '<'
           res << compile_partial($2.strip)
         when '{'
@@ -106,6 +123,24 @@ class Mustache
     # Get a (hopefully) literal version of an object, sans quotes
     def str(s)
       s.inspect[1..-2]
+    end
+
+    # {{ - opening tag delimiter
+    def otag
+      @otag ||= Regexp.escape('{{')
+    end
+
+    def otag=(tag)
+      @otag = Regexp.escape(tag)
+    end
+
+    # }} - closing tag delimiter
+    def ctag
+      @ctag ||= Regexp.escape('}}')
+    end
+
+    def ctag=(tag)
+      @ctag = Regexp.escape(tag)
     end
 
     # {{}} - an escaped tag

@@ -144,6 +144,24 @@ And this view code:
 When rendered, our view will contain a list of all repository names in
 the database.
 
+As a convenience, if a section returns a hash (as opposed to an array
+or a boolean) it will be treated as a single item array.
+
+With the above template, we could use this Ruby code for a single
+iteration:
+
+    def repo
+      { :name => Repository.first.to_s }
+    end
+
+This would be treated by Mustache as functionally equivalent to the
+following:
+
+    def repo
+      [ { :name => Repository.first.to_s } ]
+    end
+
+
 ### Comments
 
 Comments begin with a bang and are ignored. The following template:
@@ -163,6 +181,31 @@ nothing is loaded we render the template directly using our current context.
 
 In this way partials can reference variables or sections the calling
 view defines.
+
+
+### Set Delimiter
+
+Set Delimiter tags start with an equal sign and change the tag
+delimiters from {{ and }} to custom strings.
+
+Consider the following contrived example:
+
+    * {{ default_tags }}
+    {{=<% %>=}}
+    * <% erb_style_tags %>
+    <%={{ }}=%>
+    * {{ default_tags_again }}
+
+Here we have a list with three items. The first item uses the default
+tag style, the second uses erb style as defined by the Set Delimiter
+tag, and the third returns to the default style after yet another Set
+Delimiter declaration.
+
+According to [ctemplates][3], this "is useful for languages like TeX, where
+double-braces may occur in the text and are awkward to use for
+markup."
+
+Custom delimiters may not contain whitespace or the equals sign.
 
 
 Dict-Style Views
@@ -206,11 +249,11 @@ follows the classic Ruby naming convention.
 
     TemplatePartial => ./template_partial.html
 
-You can set the search path using `Mustache.path`. It can be set on a
+You can set the search path using `Mustache.template_path`. It can be set on a
 class by class basis:
 
     class Simple < Mustache
-      self.path = File.dirname(__FILE__)
+      self.template_path = File.dirname(__FILE__)
       ... etc ...
     end
 
@@ -222,11 +265,18 @@ If you want to just change what template is used you can set
 
     Simple.template_file = './blah.html'
 
-You can also go ahead and set the template directly:
+Mustache also allows you to define the extension it'll use.
+
+    Simple.template_extension = 'xml'
+
+Given all other defaults, the above line will cause Mustache to look
+for './blah.xml'
+
+Feel free to set the template directly:
 
     Simple.template = 'Hi {{person}}!'
 
-You can also set a different template for only a single instance:
+Or set a different template for a single instance:
 
     Simple.new.template = 'Hi {{person}}!'
 
@@ -347,3 +397,4 @@ Meta
 
 [1]: http://code.google.com/p/google-ctemplate/
 [2]: http://www.ivan.fomichev.name/2008/05/erlang-template-engine-prototype.html
+[3]: http://google-ctemplate.googlecode.com/svn/trunk/doc/howto.html

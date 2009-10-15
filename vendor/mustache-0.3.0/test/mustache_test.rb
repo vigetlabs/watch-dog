@@ -9,6 +9,7 @@ require 'escaped'
 require 'unescaped'
 require 'comments'
 require 'passenger'
+require 'delimiters'
 
 class MustacheTest < Test::Unit::TestCase
   def test_passenger
@@ -24,12 +25,23 @@ end_passenger
   def test_complex_view
     assert_equal <<-end_complex, ComplexView.render
 <h1>Colors</h1>
-  <ul>
-      <li><strong>red</strong></li>
-      <li><a href="#Green">green</a></li>
-      <li><a href="#Blue">blue</a></li>
-  </ul>
+<ul>
+  <li><strong>red</strong></li>
+    <li><a href="#Green">green</a></li>
+    <li><a href="#Blue">blue</a></li>
+    </ul>
 end_complex
+
+# TODO: Preserve indentation
+# http://github.com/defunkt/mustache/issues#issue/2
+#     assert_equal <<-end_complex, ComplexView.render
+# <h1>Colors</h1>
+#   <ul>
+#       <li><strong>red</strong></li>
+#       <li><a href="#Green">green</a></li>
+#       <li><a href="#Blue">blue</a></li>
+#   </ul>
+# end_complex
   end
 
   def test_single_line_sections
@@ -131,6 +143,18 @@ Welcome
 end_partial
   end
 
+
+  def test_delimiters
+    assert_equal <<-end_partial, Delimiters.render
+
+* It worked the first time.
+
+* And it worked the second time.
+
+* Then, surprisingly, it worked the third time.
+end_partial
+  end
+
   def test_comments
     assert_equal "<h1>A Comedy of Errors</h1>\n", Comments.render
   end
@@ -182,4 +206,59 @@ data
                                                      :deploy_to => '/var/www/example.com' )
   end
 
+  def test_reports_type_errors_in_sections
+    instance = Mustache.new
+    instance[:list] = [ :item, 1234 ]
+    instance.template = '{{#list}} <li>{{item}}</li> {{/list}}'
+
+    assert_raise TypeError do
+      instance.render
+    end
+  end
+
+  def test_enumerable_sections_accept_a_hash_as_a_context
+    instance = Mustache.new
+    instance[:list] = { :item => 1234 }
+    instance.template = '{{#list}} <li>{{item}}</li> {{/list}}'
+
+    assert_equal '<li>1234</li>', instance.render.strip
+  end
+
+  def test_knows_when_its_been_compiled_when_set_with_string
+    klass = Class.new(Mustache)
+
+    assert ! klass.compiled?
+    klass.template = 'Hi, {{person}}!'
+    assert klass.compiled?
+  end
+
+  def test_knows_when_its_been_compiled_when_using_a_file_template
+    klass = Class.new(Simple)
+    klass.template_file = File.dirname(__FILE__) + '/../examples/simple.html'
+
+    assert ! klass.compiled?
+    klass.render
+    assert klass.compiled?
+  end
+
+  def test_an_instance_knows_when_its_class_is_compiled
+    instance = Simple.new
+
+    assert ! Simple.compiled?
+    assert ! instance.compiled?
+
+    Simple.render
+
+    assert Simple.compiled?
+    assert instance.compiled?
+  end
+
+  def test_knows_when_its_been_compiled_at_the_instance_level
+    klass = Class.new(Mustache)
+    instance = klass.new
+
+    assert ! instance.compiled?
+    instance.template = 'Hi, {{person}}!'
+    assert instance.compiled?
+  end
 end
