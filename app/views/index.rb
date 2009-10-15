@@ -5,7 +5,11 @@ class Main
 
       def sites
         Site.all.map do |site|
-          { :id => site.id, :name => site.name }
+          {
+            :id => site.id,
+            :name => site.name,
+            :status => site.latest_status || "-"
+          }
         end
       end
     end
