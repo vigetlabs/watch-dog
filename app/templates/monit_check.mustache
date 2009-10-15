@@ -1,6 +1,6 @@
 check host {{host_name}}_{{site_id}} with address {{host_name}}
     if failed url {{url}}
-    and content != "{{match_text}}"
+    {{#match_text?}}and content != "{{match_text}}"{{/match_text?}}
     for {{threshold}} cycles
         then exec "{{curl_bin_dir}}/curl -fs -d status=fail http://{{watch_dog_host}}/sites/{{site_id}}/status"
     else if succeeded
