@@ -1,6 +1,9 @@
 <ul class="sites">
 {{#sites}}
-  <li class="{{status}}"><a href="/sites/{{id}}">{{name}}</a></li>
+  <li class="{{status}}">
+    <a href="/sites/{{id}}">{{name}}</a>
+    <em>(<a href="{{url}}">{{url}}</a>)</em>
+  </li>
 {{/sites}}
 </ul>
 

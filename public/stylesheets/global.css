@@ -32,9 +32,15 @@ ul.sites {
 
 ul.sites li {
   list-style-type: none;
-  margin: 2px 0;
-  padding: 5px;
+  margin: 5px 0;
+  padding: 10px;
   background-color: #eee;
+}
+
+ul.sites li em, ul.sites li em  {
+  opacity: 0.3;
+  font-style: normal;
+  font-size: 0.7em;
 }
 
 ul.sites li.success {

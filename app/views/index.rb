@@ -8,6 +8,7 @@ class Main
           {
             :id => site.id,
             :name => site.name,
+            :url => site.url,
             :status => site.latest_status
           }
         end
