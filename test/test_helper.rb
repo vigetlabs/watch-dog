@@ -7,6 +7,8 @@ require "contest"
 require "quietbacktrace"
 require 'active_support/testing/assertions'
 
+Ohm.flush
+
 Debugger.start
 Debugger.settings[:autoeval] = true
 Debugger.settings[:autolist] = 1
@@ -53,9 +55,11 @@ module Factory
 
   def factory(options = {}, &block)
     if block_given?
-      @default_options = Options.new.instance_eval(&block)
+      @default_options = block
     else
-      self.new((@default_options || {}).merge(options))
+      @default_options.nil? ?
+        self.new(options) :
+        self.new(@default_options.call.merge(options))
     end
   end
 end

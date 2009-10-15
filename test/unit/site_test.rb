@@ -65,6 +65,9 @@ class SiteTest < Test::Unit::TestCase
     end
     
     teardown do
+      unless @site.new?
+        FileUtils.rm_f(root_path('monitrc', "#{@site.id}.monitrc"))
+      end
       @site = nil
     end
   end
