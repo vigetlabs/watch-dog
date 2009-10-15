@@ -55,6 +55,10 @@ class Site < Ohm::Model
   def host
     URI.parse(url).host
   end
+  
+  def latest_status
+    status_record.sort(:order => "DESC", :limit => 1).first
+  end
 
   private
     def create_monit_check
