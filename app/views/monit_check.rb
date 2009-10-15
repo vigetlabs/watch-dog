@@ -30,6 +30,10 @@ class MonitCheck < Mustache
     @site.threshold
   end
   
+  def match_text?
+    !@site.match_text.blank?
+  end
+  
   def match_text
     @site.match_text
   end
