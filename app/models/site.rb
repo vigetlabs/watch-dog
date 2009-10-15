@@ -21,7 +21,7 @@ class Site < Ohm::Model
       @http_url = Regexp.new("^(?:http|https):(?:#{NET_PATH})(?:\\?(?:#{QUERY}))?$", Regexp::EXTENDED, 'N')
     end
   end
-  
+
   def save_with_monit_callback
     if result = save_without_monit_callback
       create_monit_check
@@ -45,7 +45,7 @@ class Site < Ohm::Model
     assert_present :url
     assert_present :threshold
     assert_present :email
-    
+
     assert_unique :url
 
     assert_format :email, Regex.email
@@ -55,7 +55,7 @@ class Site < Ohm::Model
   def host
     URI.parse(url).host
   end
-  
+
   def latest_status
     status_record.sort(:order => "DESC", :limit => 1).first
   end
