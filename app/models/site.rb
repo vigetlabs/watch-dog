@@ -36,7 +36,7 @@ class Site < Ohm::Model
   attribute :match_text
   attribute :threshold
   attribute :email
-  list :test_record
+  list :status_record
 
   index :url
 

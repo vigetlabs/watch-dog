@@ -31,4 +31,10 @@ class Main
       mustache :edit_site
     end
   end
+  
+  post "/sites/:id/status" do
+    @site = Site[params[:id]]
+    @site.status_record << params[:status]
+    ""
+  end
 end
