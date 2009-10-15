@@ -36,6 +36,11 @@ class Main
     end
   end
 
+  delete "/sites/:id" do
+    Site[params[:id]].delete
+    redirect '/'
+  end
+
   post "/sites/:id/status" do
     @site = Site[params[:id]]
     @site.status_record << params[:status]

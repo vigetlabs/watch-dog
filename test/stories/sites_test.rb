@@ -45,7 +45,7 @@ class SitesTest < Test::Unit::TestCase
       fill_in "site-email", :with => "admin@google.com"
       click_button "add"
 
-      assert_have_no_selector "form"
+      assert_have_no_selector 'form input[type="text"]'
       assert_contain "admin@google.com"
     end
 
@@ -84,7 +84,7 @@ class SitesTest < Test::Unit::TestCase
       fill_in "email", :with => "newuser@example.com"
       click_button "save"
 
-      assert_have_no_selector "form"
+      assert_have_no_selector 'form input[type="text"]'
       assert_contain "newuser@example.com"
       assert_contain "feeling lucky"
     end
@@ -97,6 +97,17 @@ class SitesTest < Test::Unit::TestCase
 
       assert_not_contain "xxxxx"
       assert_have_selector "form"
+    end
+  end
+
+  story "I should be able to delete a site" do
+    scenario "A user goes to a site page and hits delete" do
+      site = Site.factory(:name => "Yahoo").save
+      visit "/sites/#{site.id}"
+      click_button "delete"
+
+      assert_equal nil, Site[site.id]
+      assert_not_contain "Yahoo"
     end
   end
 

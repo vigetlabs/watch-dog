@@ -15,4 +15,8 @@
   <dd>{{site_email}}</dd>
 </dl>
 
-<p><a href="/sites/{{site_id}}/edit">Edit this site</a></p>
+<form action="/sites/{{site_id}}" method="POST" onsubmit="return confirm('Delete this site?')">
+  <a href="/sites/{{site_id}}/edit">Edit this site</a> |
+  <input type="hidden" name="_method" value="delete" />
+  <input type="submit" value="delete" />
+</form>
