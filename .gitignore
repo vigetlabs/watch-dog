@@ -8,3 +8,4 @@ monitrc/**/*.monitrc
 tmp/*
 tmp/**/*
 config/settings.yml
+config/deploy.rb
