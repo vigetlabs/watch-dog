@@ -24,17 +24,7 @@ class Main
       end
 
       def site_errors
-        errors = site.errors.present do |e|
-          e.on [:name, :not_present], "Name should be present"
-          e.on [:url, :not_present], "URL should be present"
-          e.on [:url, :format], "URL should follow standard format"
-          e.on [:threshold, :not_present], "# of retries should be present"
-          e.on [:email, :not_present], "Email address should be present"
-          e.on [:email, :format], "Email address should follow standard format"
-          e.on [:account, :not_present], "You should supply an account"
-        end
-
-        errors.map {|e| { :message => e} }
+        errors = site.errors.map {|attr, msg| { :message => "#{attr} #{msg}" } }
       end
     end
   end

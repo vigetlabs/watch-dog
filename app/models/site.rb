@@ -22,33 +22,20 @@ class Site < ActiveRecord::Base
     end
   end
 
-  def save_with_monit_callback
-    if result = save_without_monit_callback
-      create_monit_check
-    end
-    result
-  end
-  private :save_with_monit_callback
-  alias_method_chain :save, :monit_callback
+  after_save :create_monit_check
 
-  def validate
-    assert_present :name
-    assert_present :url
-    assert_present :threshold
-    assert_present :email
+  validates_presence_of :name
+  validates_presence_of :url
+  validates_presence_of :threshold
+  validates_presence_of :email
 
-    assert_unique :url
+  validates_uniqueness_of :url
 
-    assert_format :email, Regex.email
-    assert_format :url, Regex.http_url
-  end
+  validates_format_of :email, :with => Regex.email,     :allow_nil => true
+  validates_format_of :url,   :with => Regex.http_url,  :allow_nil => true
 
   def host
     URI.parse(url).host
-  end
-
-  def latest_status
-    status_record.sort(:order => "DESC", :limit => 1).first
   end
 
   private
@@ -58,7 +45,10 @@ class Site < ActiveRecord::Base
     File.open(root_path('monitrc', RACK_ENV, "#{self.id}.monitrc"), 'w') do |file|
       file << @template.render
     end
+
     FileUtils.chmod 0700, root_path('monitrc', RACK_ENV, "#{self.id}.monitrc")
     system "#{File.join(settings(:monit_bin_dir), 'monit')} #{settings(:monit_cli_options)} reload"
+
+    return true
   end
 end

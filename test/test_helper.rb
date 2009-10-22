@@ -5,8 +5,9 @@ require File.expand_path(File.join(File.dirname(__FILE__), "..", "init"))
 require "rack/test"
 require "contest"
 require "quietbacktrace"
-require 'active_support/testing/assertions'
-require 'mocha'
+require "active_support/testing/assertions"
+require "mocha"
+require "factory_girl"
 
 Debugger.start
 Debugger.settings[:autoeval] = true
@@ -41,26 +42,11 @@ class Test::Unit::TestCase
       assert(!collection.include?(x), msg)
     end
   end
-end
 
-module Factory
-  class Options
-    def method_missing(method, *args)
-      @records ||= {}
-      @records[method] = args.first
-      @records
-    end
+  self.new_backtrace_silencer :vendor do |line|
+    line.include? 'vendor'
   end
 
-  def factory(options = {}, &block)
-    if block_given?
-      @default_options = Options.new.instance_eval(&block)
-    else
-      options = (@default_options || {}).merge(options)
-      options.each {|k,v| options[k] = v.call if v.is_a?(Proc) }
-      self.new(options)
-    end
-  end
+  self.backtrace_silencers << :vendor
 end
 
-require "factories"

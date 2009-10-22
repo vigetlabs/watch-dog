@@ -3,7 +3,7 @@ require "stories_helper"
 class SitesTest < Test::Unit::TestCase
   story "I should be able to visit the home page which is a list of sites" do
     scenario "A visitor goes to the root URL" do
-      site = Site.factory.save
+      site = Factory(:site)
 
       visit "/"
 
@@ -13,7 +13,7 @@ class SitesTest < Test::Unit::TestCase
     end
 
     scenario "A visitor goes to the sites list" do
-      site = Site.factory.save
+      site = Factory(:site)
 
       visit "/sites"
 
@@ -64,7 +64,7 @@ class SitesTest < Test::Unit::TestCase
 
   story "I should be able to view details about a site" do
     scenario "A user goes to the site page" do
-      site = Site.factory.save
+      site = Factory(:site)
       visit "/sites/#{site.id}"
       assert_contain "feeling lucky"
     end
@@ -72,14 +72,14 @@ class SitesTest < Test::Unit::TestCase
 
   story "I should be able to edit details about a site" do
     scenario "A user goes to the site edit page" do
-      site = Site.factory.save
+      site = Factory(:site)
       visit "/sites/#{site.id}/edit"
       assert_have_selector 'form textarea[name="site[match_text]"]'
       assert_contain "feeling lucky"
     end
 
     scenario "A user updates a site record" do
-      site = Site.factory.save
+      site = Factory(:site)
       visit "/sites/#{site.id}/edit"
       fill_in "email", :with => "newuser@example.com"
       click_button "save"
@@ -90,7 +90,7 @@ class SitesTest < Test::Unit::TestCase
     end
 
     scenario "A user updates a site record with invalid data" do
-      site = Site.factory.save
+      site = Factory(:site)
       visit "/sites/#{site.id}/edit"
       fill_in "email", :with => "xxxxx"
       click_button "save"
@@ -102,32 +102,32 @@ class SitesTest < Test::Unit::TestCase
 
   story "I should be able to delete a site" do
     scenario "A user goes to a site page and hits delete" do
-      site = Site.factory(:name => "Yahoo").save
+      site = Factory(:site, :name => "Yahoo")
       visit "/sites/#{site.id}"
       click_button "delete"
 
-      assert_equal nil, Site[site.id]
+      assert_equal nil, Site.find_by_id(site.id)
       assert_not_contain "Yahoo"
     end
   end
 
   story "monit should be able update the satus of a site" do
     scenario "monit hits the API endpoint with a success status" do
-      site = Site.factory.save
+      site = Factory(:site)
 
       visit "/sites/#{site.id}/status", :post, {:status => "success"}
 
-      site = Site[site.id]
-      assert_equal site.status_record.sort(:order => "DESC", :limit => 1).first, "success"
+      site = Site.find(site.id)
+      assert_equal "success", site.status_record
     end
 
     scenario "monit hits the API endpoint with a fail status" do
-      site = Site.factory.save
+      site = Factory(:site)
 
       visit "/sites/#{site.id}/status", :post, {:status => "fail"}
 
-      site = Site[site.id]
-      assert_equal site.status_record.sort(:order => "DESC", :limit => 1).first, "fail"
+      site = Site.find(site.id)
+      assert_equal "fail", site.status_record
     end
   end
 

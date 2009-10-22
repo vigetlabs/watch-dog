@@ -23,6 +23,7 @@ class Main < Monk::Glue
   configure do
     # Set up ActiveRecord
     @db_config = YAML.load(File.open('config/database.yml'))
+    ActiveRecord::Base.configurations = @db_config
     ActiveRecord::Base.establish_connection(@db_config[Main.environment.to_s])
 
     # Load all application files.

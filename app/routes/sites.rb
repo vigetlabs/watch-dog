@@ -18,18 +18,18 @@ class Main
   end
 
   get "/sites/:id" do
-    @site = Site[params[:id]]
+    @site = Site.find(params[:id])
     mustache :show_site
   end
 
   get "/sites/:id/edit" do
-    @site = Site[params[:id]]
+    @site = Site.find(params[:id])
     mustache :edit_site
   end
 
   put "/sites/:id" do
-    @site = Site[params[:id]]
-    if @site.update(params[:site])
+    @site = Site.find(params[:id])
+    if @site.update_attributes(params[:site])
       redirect "/sites/#{@site.id}"
     else
       mustache :edit_site
@@ -37,13 +37,13 @@ class Main
   end
 
   delete "/sites/:id" do
-    Site[params[:id]].delete
+    Site.find(params[:id]).delete
     redirect '/'
   end
 
   post "/sites/:id/status" do
-    @site = Site[params[:id]]
-    @site.status_record << params[:status]
+    @site = Site.find(params[:id])
+    @site.update_attribute(:status_record, params[:status])
     ""
   end
 end
