@@ -5,6 +5,8 @@ class Monk < Thor
   def test
     verify_config(:test)
 
+    system "rake db:test:load"
+
     $:.unshift File.join(File.dirname(__FILE__), "test")
 
     Dir['test/**/*_test.rb'].each do |file|
