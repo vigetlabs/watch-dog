@@ -77,6 +77,26 @@ class SiteTest < Test::Unit::TestCase
 
       @site.save
     end
+    
+    context 'that has been saved' do
+      setup do
+        @site.save
+      end
+      
+      should 'remove monitrc file when destroyed' do
+        @site.destroy
+        assert !File.exist?(root_path('monitrc', RACK_ENV, "#{@site.id}.monitrc"))
+      end
+      
+      should 'reload monit when destroyed' do
+        @site.class_eval do
+          def system(*args); end
+        end
+        @site.expects(:system).with("#{File.join(settings(:monit_bin_dir), 'monit')} #{settings(:monit_cli_options)} reload").returns(true)
+        
+        @site.destroy
+      end
+    end
 
     teardown do
       unless @site.new_record?

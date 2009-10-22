@@ -37,7 +37,7 @@ class Main
   end
 
   delete "/sites/:id" do
-    Site.find(params[:id]).delete
+    Site.find(params[:id]).destroy
     redirect '/'
   end
 end
