@@ -37,18 +37,7 @@ class Main
   end
 
   delete "/sites/:id" do
-    Site.find(params[:id]).delete
+    Site.find(params[:id]).destroy
     redirect '/'
-  end
-
-  post "/sites/:id/status" do
-    @site = Site.find(params[:id])
-    @site.update_attribute(:status_record, params[:status])
-    ""
-  end
-  
-  get "/watchdog.css" do
-    content_type 'text/css', :charset => 'utf-8'
-    sass :stylesheet
   end
 end

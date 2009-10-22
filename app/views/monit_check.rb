@@ -6,12 +6,8 @@ class MonitCheck < Mustache
     @site = site
   end
   
-  def watch_dog_host
-    settings :host_name
-  end
-  
-  def curl_bin_dir
-    settings :curl_bin_dir
+  def monit_check_name
+    @site.monit_check_name
   end
   
   def site_name
@@ -36,10 +32,6 @@ class MonitCheck < Mustache
   
   def match_text
     @site.match_text
-  end
-  
-  def site_id
-    @site.id
   end
   
   def email
