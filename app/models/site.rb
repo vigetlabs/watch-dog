@@ -37,6 +37,10 @@ class Site < ActiveRecord::Base
   def host
     URI.parse(url).host
   end
+  
+  def monit_check_name
+    "#{host}_#{self.id}"
+  end
 
   private
 

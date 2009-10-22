@@ -40,10 +40,4 @@ class Main
     Site.find(params[:id]).delete
     redirect '/'
   end
-
-  post "/sites/:id/status" do
-    @site = Site.find(params[:id])
-    @site.update_attribute(:status_record, params[:status])
-    ""
-  end
 end

@@ -111,26 +111,6 @@ class SitesTest < Test::Unit::TestCase
     end
   end
 
-  story "monit should be able update the satus of a site" do
-    scenario "monit hits the API endpoint with a success status" do
-      site = Factory(:site)
-
-      visit "/sites/#{site.id}/status", :post, {:status => "success"}
-
-      site = Site.find(site.id)
-      assert_equal "success", site.status_record
-    end
-
-    scenario "monit hits the API endpoint with a fail status" do
-      site = Factory(:site)
-
-      visit "/sites/#{site.id}/status", :post, {:status => "fail"}
-
-      site = Site.find(site.id)
-      assert_equal "fail", site.status_record
-    end
-  end
-
   teardown do
     FileUtils.rm_f(Dir["monitrc/#{RACK_ENV}/*.monitrc"])
   end
