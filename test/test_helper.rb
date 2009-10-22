@@ -8,8 +8,6 @@ require "quietbacktrace"
 require 'active_support/testing/assertions'
 require 'mocha'
 
-Ohm.flush
-
 Debugger.start
 Debugger.settings[:autoeval] = true
 Debugger.settings[:autolist] = 1
@@ -64,7 +62,5 @@ module Factory
     end
   end
 end
-
-Ohm::Model.extend(Factory)
 
 require "factories"

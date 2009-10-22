@@ -9,3 +9,5 @@ tmp/*
 tmp/**/*
 config/settings.yml
 config/deploy.rb
+config/database.yml
+db/*.sqlite3

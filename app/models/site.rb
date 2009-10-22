@@ -1,7 +1,7 @@
 require 'uri'
 require 'fileutils'
 
-class Site < Ohm::Model
+class Site < ActiveRecord::Base
   module Regex
     include URI::REGEXP::PATTERN
     # A general email regular expression. It allows top level domains (TLD) to be from 2 - 4 in length, any
@@ -31,15 +31,6 @@ class Site < Ohm::Model
   private :save_with_monit_callback
   alias_method_chain :save, :monit_callback
 
-  attribute :name
-  attribute :url
-  attribute :match_text
-  attribute :threshold
-  attribute :email
-  list :status_record
-
-  index :url
-
   def validate
     assert_present :name
     assert_present :url
@@ -61,13 +52,13 @@ class Site < Ohm::Model
   end
 
   private
-    def create_monit_check
-      @template = MonitCheck.new(self)
-      File.open(root_path('monitrc', RACK_ENV, "#{self.id}.monitrc"), 'w') do |file|
-        file << @template.render
-      end
-      FileUtils.chmod 0700, root_path('monitrc', RACK_ENV, "#{self.id}.monitrc")
-      system "#{File.join(settings(:monit_bin_dir), 'monit')} #{settings(:monit_cli_options)} reload"
-    end
 
+  def create_monit_check
+    @template = MonitCheck.new(self)
+    File.open(root_path('monitrc', RACK_ENV, "#{self.id}.monitrc"), 'w') do |file|
+      file << @template.render
+    end
+    FileUtils.chmod 0700, root_path('monitrc', RACK_ENV, "#{self.id}.monitrc")
+    system "#{File.join(settings(:monit_bin_dir), 'monit')} #{settings(:monit_cli_options)} reload"
+  end
 end

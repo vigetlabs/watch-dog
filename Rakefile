@@ -10,6 +10,9 @@ end
 task :environment do
   $:.push(File.dirname(__FILE__))
   require 'init'
+
+  ActiveRecord::Base.logger = Logger.new('log/database.log')
+  RAILS_ROOT = File.dirname(__FILE__)
 end
 
 Dir['tasks/**/*.rake'].each do |rakefile|

@@ -10,8 +10,8 @@ end
 
 require "monk/glue"
 require 'active_support'
+require 'active_record'
 require 'mustache/sinatra'
-require 'ohm'
 
 class Main < Monk::Glue
   set :app_file, __FILE__
@@ -19,15 +19,17 @@ class Main < Monk::Glue
   register Mustache::Sinatra
   set :views, root_path('app', 'templates')
   set :mustaches, root_path('app', 'views')
-  
+
   configure do
-    Ohm.connect
-    
+    # Set up ActiveRecord
+    @db_config = YAML.load(File.open('config/database.yml'))
+    ActiveRecord::Base.establish_connection(@db_config[Main.environment.to_s])
+
     # Load all application files.
     Dir[root_path("app/**/*.rb")].each do |file|
       require file
     end
-  end  
+  end
 end
 
 Main.run! if Main.run?
