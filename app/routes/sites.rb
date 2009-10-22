@@ -46,4 +46,9 @@ class Main
     @site.update_attribute(:status_record, params[:status])
     ""
   end
+  
+  get "/watchdog.css" do
+    content_type 'text/css', :charset => 'utf-8'
+    sass :stylesheet
+  end
 end

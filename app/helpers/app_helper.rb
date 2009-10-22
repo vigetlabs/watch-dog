@@ -11,10 +11,8 @@ class Main
         label = options[:label] || name.titlecase
         html_id = options[:id] || name
         <<-HTML
-  <p>
     <label for="#{html_id}">#{label}</label>
     <input type="#{type.to_s}" id="#{html_id}" name="#{name}" value="#{h(value.to_s)}" />
-  </p>
 HTML
       end
       
@@ -22,10 +20,8 @@ HTML
         label = options[:label] || name.titlecase
         html_id = options[:id] || name
         <<-HTML
-  <p>
     <label for="#{html_id}">#{label}</label>
     <textarea name="#{name}" id="#{html_id}">#{h(value.to_s)}</textarea>
-  </p>
 HTML
       end
       
