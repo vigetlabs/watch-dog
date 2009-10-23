@@ -35,15 +35,6 @@ class Site < ActiveRecord::Base
   validates_format_of :email, :with => Regex.email,     :allow_nil => true
   validates_format_of :url,   :with => Regex.http_url,  :allow_nil => true
 
-  def self.statuses
-    output = `monit summary `.scan(/Remote Host '.*_(\d+)'[ ]*(.*)$/)
-
-    output.inject({}) do |coll, (site_id, status)|
-      coll[site_id.to_i] = (status == "online with all services" ? "success" : "fail")
-      coll
-    end
-  end
-
   def host
     URI.parse(url).host
   end

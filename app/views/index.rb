@@ -4,7 +4,7 @@ class Main
       include Main::Helpers::AppHelper
 
       def sites
-        summaries = Site.statuses
+        summaries = Monit.statuses
 
         Site.all.map do |site|
           {
