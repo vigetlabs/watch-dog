@@ -3,8 +3,6 @@ check host {{monit_check_name}} with address {{host_name}}
     {{#match_text?}}and content == "{{match_text}}" {{/match_text?}}
     for {{threshold}} cycles
         then alert
-    else if succeeded
-        then alert
     alert {{email}} with mail-format {
       subject: [WATCH DOG] $EVENT for {{site_name}}
       message: As of $DATE {{site_name}} is $EVENT:

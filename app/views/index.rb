@@ -4,12 +4,14 @@ class Main
       include Main::Helpers::AppHelper
 
       def sites
+        summaries = Site.statuses
+
         Site.all.map do |site|
           {
             :id => site.id,
             :name => site.name,
             :url => site.url,
-            :status => site.status_record
+            :status => summaries[site.id]
           }
         end
       end
