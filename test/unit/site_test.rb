@@ -1,6 +1,6 @@
 require "test_helper"
 
-class SiteTest < Test::Unit::TestCase
+class SiteTest < Test::Unit::TestCase  
   context 'A site' do
     setup do
       @site = Factory.build(:site)
@@ -70,11 +70,7 @@ class SiteTest < Test::Unit::TestCase
     end
 
     should 'reload monit' do
-      @site.class_eval do
-        def system(*args); end
-      end
-      @site.expects(:system).with("#{File.join(settings(:monit_bin_dir), 'monit')} #{settings(:monit_cli_options)} reload").returns(true)
-
+      Monit.expects(:reload)
       @site.save
     end
     
@@ -89,11 +85,7 @@ class SiteTest < Test::Unit::TestCase
       end
       
       should 'reload monit when destroyed' do
-        @site.class_eval do
-          def system(*args); end
-        end
-        @site.expects(:system).with("#{File.join(settings(:monit_bin_dir), 'monit')} #{settings(:monit_cli_options)} reload").returns(true)
-        
+        Monit.expects(:reload)
         @site.destroy
       end
     end

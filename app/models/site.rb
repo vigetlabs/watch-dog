@@ -52,14 +52,14 @@ class Site < ActiveRecord::Base
     end
 
     FileUtils.chmod 0700, root_path('monitrc', RACK_ENV, "#{self.id}.monitrc")
-    system "#{File.join(settings(:monit_bin_dir), 'monit')} #{settings(:monit_cli_options)} reload"
+    Monit.reload
 
     return true
   end
   
   def delete_monit_check
     FileUtils.rm_f root_path('monitrc', RACK_ENV, "#{self.id}.monitrc")
-    system "#{File.join(settings(:monit_bin_dir), 'monit')} #{settings(:monit_cli_options)} reload"
+    Monit.reload
 
     return true
   end

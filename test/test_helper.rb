@@ -50,3 +50,6 @@ class Test::Unit::TestCase
   self.backtrace_silencers << :vendor
 end
 
+Monit.class_eval do
+  def system(*args); args; end
+end
