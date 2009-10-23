@@ -40,4 +40,9 @@ class Main
     Site.find(params[:id]).destroy
     redirect '/'
   end
+  
+  get '/watchdog.css' do
+    content_type "text/css"
+    sass :stylesheet
+  end
 end
