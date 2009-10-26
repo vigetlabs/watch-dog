@@ -23,6 +23,7 @@ monitoring and reports on the status of the sites you're monitoring.
 2. Copy config/settings.example.yml to config/settings.yml and fill in the correct settings
 3. Copy config/deploy.example.rb to config/deploy.rb and make the necessary changes
 4. Add this line to your monit control file:
+
     `include /path/to/watch-dog/monitrc/**/*.monitrc`
 
 
