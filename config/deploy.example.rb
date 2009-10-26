@@ -53,6 +53,11 @@ namespace :deploy do
     finalize_update
   end
 
+  desc "Restart the application"
+  task :restart, :except => { :no_release => true } do
+    run "cd #{current_path}; touch tmp/restart.txt"
+  end
+
   namespace :rollback do
     desc "Moves the repo back to the previous version of HEAD"
     task :repo, :except => { :no_release => true } do
