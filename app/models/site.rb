@@ -13,7 +13,8 @@ class Site < ActiveRecord::Base
         email_name_regex  = '[A-Z0-9_\.%\+\-]+'
         domain_head_regex = '(?:[A-Z0-9\-]+\.)+'
         domain_tld_regex  = '(?:[A-Z]{2,4}|museum|travel)'
-        /\A#{email_name_regex}@#{domain_head_regex}#{domain_tld_regex}\z/i
+        full_email = "#{email_name_regex}@#{domain_head_regex}#{domain_tld_regex}"
+        /^#{full_email}(\s*,\s*#{full_email})*$/i
       end
     end
 

@@ -22,6 +22,10 @@ class MonitCheck < Mustache
     @site.url
   end
   
+  def emails
+    @site.email.split(/\s*,\s*/).map {|e| {:email => e} }
+  end
+  
   def threshold
     @site.threshold
   end
