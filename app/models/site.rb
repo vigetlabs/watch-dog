@@ -47,20 +47,24 @@ class Site < ActiveRecord::Base
 
   def create_monit_check
     @template = MonitCheck.new(self)
-    File.open(root_path('monitrc', RACK_ENV, "#{self.id}.monitrc"), 'w') do |file|
+    File.open(monitrc_file, 'w') do |file|
       file << @template.render
     end
 
-    FileUtils.chmod 0700, root_path('monitrc', RACK_ENV, "#{self.id}.monitrc")
+    FileUtils.chmod 0700, monitrc_file
     Monit.reload
 
     return true
   end
 
   def delete_monit_check
-    FileUtils.rm_f root_path('monitrc', RACK_ENV, "#{self.id}.monitrc")
+    FileUtils.rm_f monitrc_file
     Monit.reload
 
     return true
+  end
+  
+  def monitrc_file
+    root_path('monitrc', RACK_ENV, "#{self.id}.monitrc")
   end
 end
