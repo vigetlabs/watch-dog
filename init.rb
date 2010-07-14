@@ -9,6 +9,7 @@ rescue LoadError
 end
 
 require "monk/glue"
+require 'sass'
 require 'active_support'
 require 'active_record'
 require 'mustache/sinatra'
