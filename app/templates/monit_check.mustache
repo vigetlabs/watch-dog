@@ -1,7 +1,7 @@
 check host {{monit_check_name}} with address {{host_name}}
     if failed url {{url}}
     {{#match_text?}}and content == "{{match_text}}" {{/match_text?}}
-    for {{threshold}} cycles
+    with timeout 30 seconds for {{threshold}} cycles
         then alert
     {{#emails}}
     alert {{email}} with mail-format {
