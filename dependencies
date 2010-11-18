@@ -14,3 +14,4 @@ webrat 0.7.2 (test) git://github.com/brynary/webrat.git
 mocha 0.9.8 (test)
 factory_girl 1.2.3 (test)
 haml 2.2.24
+tilt 1.1
