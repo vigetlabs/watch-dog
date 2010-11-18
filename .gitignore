@@ -11,3 +11,4 @@ config/settings.yml
 config/deploy.rb
 config/database.yml
 db/*.sqlite3
+.rvmrc

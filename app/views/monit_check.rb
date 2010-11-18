@@ -30,6 +30,22 @@ class MonitCheck < Mustache
     @site.threshold
   end
   
+  def tier_two?
+    !@site.email_tier_two.blank? && !@site.threshold_tier_two.blank?
+  end
+  
+  def threshold_tier_two
+    @site.threshold_tier_two
+  end
+  
+  def emails_tier_two
+    unless @site.email_tier_two.blank?
+      @site.email_tier_two.split(/\s*,\s*/).map {|e| {:email => e} }
+    else
+      []
+    end
+  end
+  
   def match_text?
     !@site.match_text.blank?
   end

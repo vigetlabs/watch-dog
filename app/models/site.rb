@@ -34,6 +34,7 @@ class Site < ActiveRecord::Base
   validates_uniqueness_of :url
 
   validates_format_of :email, :with => Regex.email,     :allow_nil => true
+  validates_format_of :email_tier_two, :with => Regex.email,     :allow_blank => true
   validates_format_of :url,   :with => Regex.http_url,  :allow_nil => true
 
   def host

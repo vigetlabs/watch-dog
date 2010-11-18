@@ -17,6 +17,6 @@ module Monit
   private
   
   def format_command(command)
-    "#{File.join(settings(:monit_bin_dir), 'monit')} #{settings(:monit_cli_options)} #{command}"
+    "#{File.join(monk_settings(:monit_bin_dir), 'monit')} #{monk_settings(:monit_cli_options)} #{command}"
   end
 end

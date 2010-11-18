@@ -4,7 +4,6 @@ class SitesTest < Test::Unit::TestCase
   story "I should be able to visit the home page which is a list of sites" do
     scenario "A visitor goes to the root URL" do
       site = Factory(:site)
-
       visit "/"
 
       assert_contain "Watchdog"
@@ -44,7 +43,7 @@ class SitesTest < Test::Unit::TestCase
       fill_in "site-threshold", :with => "5"
       fill_in "site-email", :with => "admin@google.com"
       click_button "add"
-
+      
       assert_have_no_selector 'form input[type="text"]'
       assert_contain "admin@google.com"
     end
@@ -105,7 +104,7 @@ class SitesTest < Test::Unit::TestCase
       site = Factory(:site, :name => "Yahoo")
       visit "/sites/#{site.id}"
       click_button "delete"
-
+      
       assert_equal nil, Site.find_by_id(site.id)
       assert_not_contain "Yahoo"
     end

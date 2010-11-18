@@ -3,7 +3,7 @@ ROOT_DIR = File.expand_path(File.dirname(__FILE__)) unless defined? ROOT_DIR
 require "rubygems"
 
 begin
-  require "vendor/dependencies-0.0.7/lib/dependencies"
+  require "vendor/dependencies-0.0.9/lib/dependencies"
 rescue LoadError
   require "dependencies"
 end
@@ -19,7 +19,10 @@ class Main < Monk::Glue
   use Rack::Session::Cookie
   register Mustache::Sinatra
   set :views, root_path('app', 'templates')
-  set :mustaches, root_path('app', 'views')
+  set :mustache, {
+    :templates => root_path('app', 'templates'),
+    :views => root_path('app', 'views')
+  }
 
   configure do
     # Set up ActiveRecord

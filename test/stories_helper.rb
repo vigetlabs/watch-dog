@@ -6,7 +6,7 @@ require "stories"
 require "stories/runner"
 
 Webrat.configure do |config|
-  config.mode = :rack
+  config.mode = :sinatra
 end
 
 class Test::Unit::TestCase

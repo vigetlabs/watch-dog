@@ -10,3 +10,18 @@ check host {{monit_check_name}} with address {{host_name}}
                $DESCRIPTION
     }
     {{/emails}}
+
+{{#tier_two?}}
+check host {{monit_check_name}}_tier_two with address {{host_name}}
+    if failed url {{url}}
+    {{#match_text?}}and content == "{{match_text}}" {{/match_text?}}
+    with timeout 30 seconds for {{threshold_tier_two}} cycles
+        then alert
+    {{#emails_tier_two}}
+    alert {{email}} with mail-format {
+      subject: [WATCH DOG] $EVENT for {{site_name}}
+      message: As of $DATE {{site_name}} is $EVENT:
+               $DESCRIPTION
+    }
+    {{/emails_tier_two}}
+{{/tier_two?}}

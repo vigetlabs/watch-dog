@@ -22,6 +22,16 @@ class Main
       def email_input(value = nil)
         input(:text, 'site[email]', site.email, :id => 'site-email', :label => 'Email Address')
       end
+      
+      def tier_two_threshold_input(value = nil)
+        input(:text, 'site[threshold_tier_two]', site.threshold_tier_two, :id => 'site-threshold_tier_two', 
+          :label => '# of Failures for Tier Two Notification')
+      end
+
+      def tier_two_email_input(value = nil)
+        input(:text, 'site[email_tier_two]', site.email_tier_two, :id => 'site-email_tier_two',
+          :label => 'Tier Two Email Address')
+      end
 
       def site_errors
         errors = site.errors.map {|attr, msg| { :message => "#{attr} #{msg}" } }

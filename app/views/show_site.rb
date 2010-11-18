@@ -3,7 +3,7 @@ class Main
     class ShowSite < Mustache
       attr_reader :site
 
-      [:id, :name, :url, :threshold, :email].each do |attribute|
+      [:id, :name, :url, :threshold, :email, :email_tier_two, :threshold_tier_two].each do |attribute|
         define_method("site_#{attribute}") { site.send(attribute) }
       end
       
