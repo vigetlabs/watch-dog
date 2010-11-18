@@ -4,7 +4,9 @@ class Main
       attr_reader :site
 
       [:id, :name, :url, :threshold, :email, :email_tier_two, :threshold_tier_two].each do |attribute|
-        define_method("site_#{attribute}") { site.send(attribute) }
+        define_method("site_#{attribute}") { 
+          site.send(attribute) || '&nbsp;'
+        }
       end
       
       def site_match_text
