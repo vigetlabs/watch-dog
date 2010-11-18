@@ -14,6 +14,10 @@ require 'active_support'
 require 'active_record'
 require 'mustache/sinatra'
 
+log = File.new("log/sinatra.log", "a+")
+STDOUT.reopen(log)
+STDERR.reopen(log)
+
 class Main < Monk::Glue
   set :app_file, __FILE__
   use Rack::Session::Cookie
@@ -23,6 +27,8 @@ class Main < Monk::Glue
     :templates => root_path('app', 'templates'),
     :views => root_path('app', 'views')
   }
+  set :raise_errors, true
+  set :show_exceptions
 
   configure do
     # Set up ActiveRecord
