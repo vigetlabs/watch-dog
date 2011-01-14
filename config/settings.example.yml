@@ -2,6 +2,8 @@ defaults: &defaults
   :log_level: warn
   :monit_bin_dir: "/usr/local/bin"
   :monit_cli_options: "-d 60 -c /path/to/monitrc"
+  :http_auth_username: admin
+  :http_auth_password: password
 
 :development:
   <<: *defaults

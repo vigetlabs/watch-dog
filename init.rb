@@ -21,6 +21,11 @@ STDERR.reopen(log)
 class Main < Monk::Glue
   set :app_file, __FILE__
   use Rack::Session::Cookie
+  if RACK_ENV.to_sym == :production
+    use Rack::Auth::Basic do |username, password|
+      username == monk_settings(:http_auth_username) && password == monk_settings(:http_auth_password)
+    end
+  end
   register Mustache::Sinatra
   set :views, root_path('app', 'templates')
   set :mustache, {
