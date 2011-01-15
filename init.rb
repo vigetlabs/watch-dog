@@ -42,6 +42,9 @@ class Main < Monk::Glue
     ActiveRecord::Base.establish_connection(@db_config[Main.environment.to_s])
 
     # Load all application files.
+    Dir[root_path("app/helpers/**/*.rb")].each do |file|
+      require file
+    end
     Dir[root_path("app/**/*.rb")].each do |file|
       require file
     end
