@@ -1,7 +1,12 @@
-set :application, "watch-dog"
+set :application, "watchdog"
 set :use_sudo, false
 set :repository,  "git://github.com/vigetlabs/watch-dog.git"
 set :scm, :git
+set :ssh_options, {:forward_agent => true}
+set :branch, 'origin/master'
+set :user, "watchdog-deploy"
+set :deploy_to, "/var/www/#{application}"
+set :rake, "/usr/local/bin/rake"
 
 set(:latest_release)  { fetch(:current_path) }
 set(:release_path)    { fetch(:current_path) }
@@ -13,15 +18,13 @@ set(:previous_revision) { capture("cd #{current_path}; git rev-parse --short HEA
 
 set(:moinitrc_path) { File.join(shared_path, 'monitrc') }
 
-set :deploy_to, "/var/www/html/#{application}"
+default_run_options[:shell] = 'bash'
 
-set :user, "watch-dog-deploy"
+default_environment["RACK_ENV"] = 'production'
 
 role :web, "your.server.com"
 role :app, "your.server.com"
 role :db,  "your.server.com", :primary => true
-
-set :branch, 'origin/master'
 
 after  "deploy:update_code",  "app:symlinks"
 
@@ -58,6 +61,13 @@ namespace :deploy do
     run "cd #{current_path}; touch tmp/restart.txt"
   end
 
+  desc "Run the database migrations"
+  task :migrations, :except => { :no_release => true } do
+    update_code
+    run "cd #{current_path}; #{rake} RACK_ENV=production db:migrate"
+    restart
+  end
+
   namespace :rollback do
     desc "Moves the repo back to the previous version of HEAD"
     task :repo, :except => { :no_release => true } do
@@ -82,5 +92,7 @@ namespace :app do
   desc "Make symlinks"
   task :symlinks do
     run "ln -nfs #{shared_path}/monitrc #{current_path}/monitrc"
+    run "ln -nfs #{shared_path}/config/database.yml #{current_path}/config/database.yml"
+    run "ln -nfs #{shared_path}/config/settings.yml #{current_path}/config/settings.yml"
   end
 end
