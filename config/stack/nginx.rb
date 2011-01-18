@@ -40,7 +40,7 @@ package :nginx_conf do
   description "Sample Nginx conf file"
   install_path "/usr/local/nginx/conf/nginx.conf"
   
-  transfer 'config/stack/files/nginx.conf.sample', '/tmp/nginx.conf' do
+  transfer 'config/stack/files/nginx.conf', '/tmp/nginx.conf' do
     post :install, "mv -f /tmp/nginx.conf /usr/local/nginx/conf/nginx.conf"
   end
   

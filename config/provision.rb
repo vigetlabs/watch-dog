@@ -14,6 +14,7 @@ policy :watchdog_stack, :roles => :provision do
   requires :git
   requires :monit
   requires :monit_conf
+  requires :monit_init
   requires :rack
   requires :sinatra
   requires :sqlite

@@ -13,4 +13,4 @@ config/database.yml
 db/*.sqlite3
 .rvmrc
 config/stack/files/monitrc.conf
-config/stack/files/nginx.conf.sample
+config/stack/files/nginx.conf
