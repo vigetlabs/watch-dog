@@ -91,7 +91,7 @@ end
 namespace :app do
   desc "Make symlinks"
   task :symlinks do
-    run "ln -nfs #{shared_path}/monitrc #{current_path}/monitrc"
+    run "ln -nfs #{shared_path}/monitrc #{current_path}/"
     run "ln -nfs #{shared_path}/config/database.yml #{current_path}/config/database.yml"
     run "ln -nfs #{shared_path}/config/settings.yml #{current_path}/config/settings.yml"
   end
