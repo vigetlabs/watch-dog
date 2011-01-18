@@ -53,7 +53,7 @@ class Site < ActiveRecord::Base
       file << @template.render
     end
 
-    FileUtils.chmod 0700, monitrc_file
+    FileUtils.chmod 0600, monitrc_file
     Monit.reload
 
     return true
