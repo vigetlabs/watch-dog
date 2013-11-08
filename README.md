@@ -1,5 +1,7 @@
 # Watch-Dog
 
+[![Code Climate](https://codeclimate.com/github/vigetlabs/watch-dog.png)](https://codeclimate.com/github/vigetlabs/watch-dog)
+
 This is small [Sinatra](http://www.sinatrarb.com/) app for managing a set
 of [monit](http://mmonit.com/) checks on remote web sites.
 
