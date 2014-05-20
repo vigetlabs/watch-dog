@@ -3,7 +3,6 @@ require 'fileutils'
 
 class Site < ActiveRecord::Base
   module Regex
-    include URI::REGEXP::PATTERN
     # A general email regular expression. It allows top level domains (TLD) to be from 2 - 4 in length, any
     # TLD longer than that must be manually specified. The decisions behind this regular expression were made
     # by reading this website: http://www.regular-expressions.info/email.html, which is an excellent resource
@@ -14,12 +13,12 @@ class Site < ActiveRecord::Base
         domain_head_regex = '(?:[A-Z0-9\-]+\.)+'
         domain_tld_regex  = '(?:[A-Z]{2,4}|museum|travel)'
         full_email = "#{email_name_regex}@#{domain_head_regex}#{domain_tld_regex}"
-        /^#{full_email}(\s*,\s*#{full_email})*$/i
+        /\A#{full_email}(\s*,\s*#{full_email})*\z/i
       end
     end
 
     def self.http_url
-      @http_url ||= Regexp.new("^(?:http|https):(?:#{NET_PATH})(?:\\?(?:#{QUERY}))?$", Regexp::EXTENDED, 'N')
+      @http_url ||= Regexp.new("\\A(?:http|https):(?:#{URI::DEFAULT_PARSER.pattern[:NET_PATH]})(?:\\?(?:#{URI::DEFAULT_PARSER.pattern[:QUERY]}))?\\z", Regexp::EXTENDED, 'N')
     end
   end
 

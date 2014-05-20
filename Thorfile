@@ -1,33 +1,6 @@
 class Monk < Thor
   include Thor::Actions
 
-  desc "test", "Run all tests"
-  def test
-    verify_config(:test)
-
-    system "rake db:test:load"
-
-    $:.unshift File.join(File.dirname(__FILE__), "test")
-
-    Dir['test/**/*_test.rb'].each do |file|
-      load file unless file =~ /^-/
-    end
-  end
-
-  desc "stories", "Run user stories."
-  method_option :pdf, :type => :boolean
-  def stories
-    $:.unshift(Dir.pwd, "test")
-
-    ARGV << "-r"
-    ARGV << (options[:pdf] ? "stories-pdf" : "stories")
-    ARGV.delete("--pdf")
-
-    Dir["test/stories/*_test.rb"].each do |file|
-      load file
-    end
-  end
-
   desc "start ENV", "Start Monk in the supplied environment"
   def start(env = ENV["RACK_ENV"] || "development")
     verify_config(env)
