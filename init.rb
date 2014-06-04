@@ -10,6 +10,12 @@ require 'active_support/core_ext'
 require 'active_record'
 require 'mustache/sinatra'
 
+unless RACK_ENV.to_sym == :test
+  log = File.new("log/sinatra.log", "a+")
+  STDOUT.reopen(log)
+  STDERR.reopen(log)
+end
+
 class Main < Monk::Glue
   set :app_file, __FILE__
 
