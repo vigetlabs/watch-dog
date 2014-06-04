@@ -14,6 +14,8 @@ gem 'mustache'
 gem 'sqlite3'
 gem 'thor', :require => false
 
+gem 'capistrano', :require => false
+
 group :test do
   gem 'rspec'
   gem 'faker'
