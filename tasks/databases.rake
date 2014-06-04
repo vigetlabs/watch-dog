@@ -1,7 +1,6 @@
 namespace :db do
   task :load_config => :environment do
     require 'active_record'
-    ActiveRecord::Base.configurations = Main.db_config
   end
 
   namespace :create do
