@@ -40,6 +40,8 @@ class Main < Monk::Glue
 
   set :show_exceptions, true
 
+  set :logging, true
+
   configure do
     enable :logging
 
