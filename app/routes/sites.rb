@@ -43,6 +43,6 @@ class Main
   
   get '/watchdog.css' do
     content_type "text/css"
-    sass :stylesheet
+    scss :stylesheet
   end
 end
